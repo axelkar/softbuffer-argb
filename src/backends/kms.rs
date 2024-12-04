@@ -386,7 +386,7 @@ impl SharedBuffer {
         height: NonZeroU32,
     ) -> Result<Self, SoftBufferError> {
         let db = display
-            .create_dumb_buffer((width.get(), height.get()), DrmFourcc::Xrgb8888, 32)
+            .create_dumb_buffer((width.get(), height.get()), DrmFourcc::Argb8888, 32)
             .swbuf_err("failed to create dumb buffer")?;
         let fb = display
             .add_framebuffer(&db, 24, 32)

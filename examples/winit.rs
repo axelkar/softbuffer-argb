@@ -11,6 +11,7 @@ fn main() {
 
     let app = winit_app::WinitAppBuilder::with_init(|elwt| {
         let window = winit_app::make_window(elwt, |w| w);
+        window.set_transparent(true);
 
         let context = softbuffer::Context::new(window.clone()).unwrap();
         let surface = softbuffer::Surface::new(&context, window.clone()).unwrap();
@@ -43,11 +44,24 @@ fn main() {
                     let mut buffer = surface.buffer_mut().unwrap();
                     for y in 0..height.get() {
                         for x in 0..width.get() {
-                            let red = x % 255;
-                            let green = y % 255;
-                            let blue = (x * y) % 255;
                             let index = y as usize * width.get() as usize + x as usize;
-                            buffer[index] = blue | (green << 8) | (red << 16);
+
+                            let is_black = (x / 255 + y / 255) % 2 == 0;
+                            let alpha = if is_black { 255 } else { 64 };
+                            let (red, green, blue) = if is_black {
+                                (0,0,0)
+                            } else {
+                                (255, 255, 255)
+                            };
+
+                            // Premultiply alpha
+                            let (red, green, blue) = (
+                                red * alpha / 255,
+                                green * alpha / 255,
+                                blue * alpha / 255
+                            );
+
+                            buffer[index] = blue | (green << 8) | (red << 16) | (alpha << 24);
                         }
                     }
 

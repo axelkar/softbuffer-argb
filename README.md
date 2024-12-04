@@ -1,3 +1,11 @@
+Fork
+==
+
+This fork ([canonical url](https://github.com/axelkar/softbuffer-argb)) has been created to just replace `Xrgb` with `Argb`.
+Only Wayland is implemented. People using other platforms should file pull requests.
+This will be left completely unmaintained when https://github.com/rust-windowing/softbuffer/issues/17 resolves.
+Keep in mind that this requires premultiplied alpha. See the `winit` example.
+
 Overview
 ==
 
